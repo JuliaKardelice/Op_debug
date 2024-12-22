@@ -26,6 +26,13 @@ export const DataProvider = ({ children }) => {
       setError(err);
     }
   }, []);
+
+/** Le tableau vide de base qui sera rempli par les données */
+
+/** Au chargement de la page si data contient déjà des données event.json, 
+ on arrete le script avec le return si jamais il n'en contient pas il apelle leGetData 
+ (pour être sur qu'il y ai des données ) */
+
   useEffect(() => {
     if (data) return;
     getData();
@@ -49,5 +56,7 @@ DataProvider.propTypes = {
 }
 
 export const useData = () => useContext(DataContext);
+
+/** Permet de partager les données entre composants */
 
 export default DataContext;
