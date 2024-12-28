@@ -33,7 +33,6 @@ useEffect(() => {
     return () => clearInterval(interval);
   }, [byDateDesc, index]); // Dependency added on byDateDesc and index to ensure proper effect timing
 
-  
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
