@@ -2,6 +2,8 @@ import PropTypes from "prop-types";
 import { getMonth } from "../../helpers/Date";
 
 import "./style.scss";
+// probleme sur l'image
+
 
 const EventCard = ({
   imageSrc,
@@ -38,8 +40,10 @@ EventCard.propTypes = {
 };
 
 EventCard.defaultProps = {
+
   imageAlt: "image",
   small: false,
 }
+
 
 export default EventCard;
