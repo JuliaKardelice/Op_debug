@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useData } from "../../contexts/DataContext";
 import { getMonth } from "../../helpers/Date";
 import "./style.scss";
@@ -10,64 +10,59 @@ const Slider = () => {
   const { data } = useData(); 
   const [index, setIndex] = useState(0);
 
-  /* Les dates ne sont bien classée */
-  /* le UseMemo met en cache, applique effet seulement si modifications */
+  const byDateDesc = data?.focus
+    ? data.focus.sort(
+        (evtA, evtB) => new Date(evtB.date) - new Date(evtA.date) // Tri par date décroissante
+      )
+    : [];
 
- const byDateDesc = useMemo(() =>
-    // Sorting events by date in descending order (latest first)
-    data?.focus.sort((evtA, evtB) =>
-      new Date(evtB.date) - new Date(evtA.date)  // evtB comes before evtA if its date is more recent
-    )
-    , [data?.focus]);  // Dependency on data.focus to re-run only when data changes
+  const nextCard = () => {
+    setIndex((prevIndex) =>
+      prevIndex < byDateDesc.length - 1 ? prevIndex + 1 : 0
+    );
+  };
 
-
-useEffect(() => {
-    // Logging current event id for testing previous .sort
-    console.log(byDateDesc?.[index]?.id);
-    // Auto update index every 5 seconds
-    const interval = setInterval(() => {
-      // Increment index and use modulo to loop back when reaching the end of the array
-      setIndex((prevIndex) => (prevIndex + 1) % byDateDesc.length);
-    }, 5000); // Slide changes every 5 seconds
-    // Clean up the interval when the component unmounts
-    return () => clearInterval(interval);
-  }, [byDateDesc, index]); // Dependency added on byDateDesc and index to ensure proper effect timing
+  useEffect(() => {
+    const interval = setInterval(nextCard, 5000); // Changer la carte toutes les 5 secondes
+    return () => clearInterval(interval); // Nettoyage à la désinstallation
+  }, [byDateDesc.length]); // Dépendance sur la longueur de la liste
 
   return (
     <div className="SlideCardList">
-      {byDateDesc?.map((event, idx) => (
-        <>
+   {byDateDesc.length > 0 ? (
+        byDateDesc.map((event, idx) => (
           <div
-            key={event.id}
+            key={event.id || idx} // Utiliser event.id pour la clé unique ou idx en secours
             className={`SlideCard SlideCard--${
-              index === idx ? "display" : "hide"
+              index === idx ? 'display' : 'hide'
             }`}
           >
-            <img src={event.cover} alt="forum" />
+            <img src={event.cover} alt={event.title} />
             <div className="SlideCard__descriptionContainer">
               <div className="SlideCard__description">
                 <h3>{event.title}</h3>
                 <p>{event.description}</p>
-                {/* Creer une nouvelle instance à partir de Date */}
-                <div>{getMonth(new Date(event.date))}</div> 
+                <div>{getMonth(new Date(event.date))}</div>
               </div>
             </div>
           </div>
-          <div className="SlideCard__paginationContainer">
-            <div className="SlideCard__pagination">
-              {byDateDesc.map((paginationEvent, radioIdx) => (
-                <input
-                  key={`${paginationEvent.id}`}
-                  type="radio"
-                  name="radio-button"
-                  checked={index === radioIdx}
-                  onChange={()=>setIndex(radioIdx)}
-                />
-              ))}
-            </div>
-          </div>
-        </>
-      ))}
+        ))
+      ) : (
+        <div>Aucun événement à afficher</div> // Message alternatif si aucun événement
+      )}
+      <div className="SlideCard__paginationContainer">
+        <div className="SlideCard__pagination">
+          {byDateDesc.map((event, radioIdx) => (
+            <input
+              key={event.id || radioIdx} // Utiliser event.id pour la clé unique ou radioIdx en secours
+              type="radio"
+              name="radio-button"
+              checked={index === radioIdx} // Vérifie si l'index correspond au bouton radio
+              onChange={() => setIndex(radioIdx)} // Change l'index en cliquant sur le bouton radio
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
