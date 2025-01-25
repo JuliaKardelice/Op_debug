@@ -1,0 +1,21 @@
+.error-message {
+    color: red;
+    margin-top: 10px;
+    font-weight: bolder;
+
+
+  }
+  
+  .error-message p {
+    font-size: 16px;
+    padding-left: 5px;
+  }
+  
+  input.error,
+  textarea.error {
+    border-color: red;
+  }
+  
+  select.error {
+    border-color: red;
+  }
