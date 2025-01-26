@@ -18,8 +18,6 @@ const Form = ({ onSuccess, onError }) => {
     message: ''
   }); // Objet qui contient les valeurs des champs du formulaire
 
-  const [errors, setErrors] = useState({}); // Objet qui contiendra les messages d'erreur pour chaque champ
-
   // Fonction pour réinitialiser le formulaire après l'envoi
   const resetForm = () => {
     setFormData({
@@ -39,34 +37,18 @@ const Form = ({ onSuccess, onError }) => {
       [name]: value // Met à jour le champ en fonction du nom (name) du champ modifié
     }));
   };
-  // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  
-  // Fonction pour valider le formulaire
-  const validateForm = () => {
-    const newErrors = {}; // On crée un objet vide pour stocker les erreurs
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) { // Si un champ est vide
-        newErrors[key] = "Ce champ est requis"; // On ajoute un message d'erreur correspondant
-      }
-    });
-    setErrors(newErrors); // Met à jour l'état avec les erreurs
-    return Object.keys(newErrors).length === 0; // Retourne true si aucune erreur
-  };
 
   // Fonction qui gère l'envoi du formulaire
   const sendContact = useCallback(
     async (evt) => {
       evt.preventDefault(); // Empêche le comportement par défaut du formulaire (rechargement de page)
 
-      // Valide le formulaire avant de l'envoyer
-      if (!validateForm()) return; // Si la validation échoue, on arrête là
-
       setSending(true); // On indique que le formulaire est en cours d'envoi
       try {
         await mockContactApi(); // Simulation d'un appel API
         setSending(false); // Arrête l'indicateur de "sending"
-        resetForm(); // Réinitialise le formulaire
         onSuccess(); // Appelle la fonction de succès si définie
+        resetForm(); // Réinitialise le formulaire après envoi
       } catch (err) {
         setSending(false); // Arrête l'indicateur de "sending"
         onError(err); // Appelle la fonction d'erreur si une erreur survient
@@ -85,7 +67,6 @@ const Form = ({ onSuccess, onError }) => {
             name="nom" 
             value={formData.nom} // Le nom est récupéré de formData
             onChange={handleChange} // handleChange est appelé quand l'utilisateur modifie ce champ
-            error={errors.nom} // Si une erreur est associée à ce champ, elle sera affichée
           />
           <Field 
             placeholder="" 
@@ -93,7 +74,6 @@ const Form = ({ onSuccess, onError }) => {
             name="prenom"
             value={formData.prenom}
             onChange={handleChange}
-            error={errors.prenom}
           />
           <Select
             selection={["Personel", "Entreprise"]}
@@ -102,7 +82,6 @@ const Form = ({ onSuccess, onError }) => {
             name="type"
             type="large"
             value={formData.type}
-            error={errors.type}
           />
           <Field 
             placeholder="" 
@@ -110,7 +89,6 @@ const Form = ({ onSuccess, onError }) => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            error={errors.email}
           />
           <Button type={BUTTON_TYPES.SUBMIT} disabled={sending}>
             {sending ? "En cours" : "Envoyer"}
@@ -124,15 +102,9 @@ const Form = ({ onSuccess, onError }) => {
             value={formData.message}
             type={FIELD_TYPES.TEXTAREA}
             onChange={handleChange}
-            error={errors.message}
           />
         </div>
       </div>
-      {Object.keys(errors).length > 0 && (
-        <div className="error-message">
-          <p>Veuillez remplir tous les champs</p>
-        </div>
-      )}
     </form>
   );
 };
