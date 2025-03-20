@@ -9,12 +9,16 @@ import "./style.css";
 
 const PER_PAGE = 9;
 
+
 const EventList = () => {
   const { data, error } = useData();
   const [type, setType] = useState(null); /* de base le type n'est pas défini, setType permet de gérer le changement d'état */
   const [currentPage, setCurrentPage] = useState(1); /* de base on est sur la première page
 
+  
   /* filtrage par catégorie */
+
+  const typeList = new Set(data?.events.map((event) => event.type));
   const filteredEventsByType = type ? data?.events.filter ((event) => event.type === type) || []
   : data?.events || [] ;
   
@@ -28,8 +32,8 @@ const EventList = () => {
     setType(evtType);
   };
 
-  const pageNumber = Math.floor((filteredEventsByType?.length || 0) / PER_PAGE) + 1; // nombre de pages
-  const typeList = new Set(data?.events.map((event) => event.type));
+  const pageNumber = Math.floor((filteredEventsByType?.length || 0) / PER_PAGE) + 1; // numero de la page 
+
   return (
     <>
     

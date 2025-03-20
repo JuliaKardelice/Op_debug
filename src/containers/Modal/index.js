@@ -4,7 +4,7 @@ import Icon from "../../components/Icon";
 import "./style.scss";
 
 const Modal = ({ opened, Content, children }) => {
-  const [isOpened, setIsOpened] = useState(opened);
+  const [isOpened, setIsOpened] = useState(opened); // Initialiser à fermer car openec boolean false
   return (
     <>
       {children({ isOpened, setIsOpened })}

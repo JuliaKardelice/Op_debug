@@ -18,7 +18,8 @@ export const api = {
 
 export const DataProvider = ({ children }) => {
   const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(null);    
+  /// gère la récupération des données avec un callback
   const getData = useCallback(async () => {
     try {
       setData(await api.loadData());

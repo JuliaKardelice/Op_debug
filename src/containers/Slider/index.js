@@ -7,6 +7,7 @@ import "./style.scss";
 const Slider = () => {
   /* destructuration (on peut appeler l'error si il y en a ) */
 
+
   const { data } = useData(); 
   const [index, setIndex] = useState(0);
 

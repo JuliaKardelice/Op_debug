@@ -23,7 +23,7 @@ describe("When Events is created", () => {
       );
       await screen.findByText("En cours");
       await screen.findByText("Envoyer");
-      expect(onSuccess).toHaveBeenCalled();
+      expect(onSuccess).toHaveBeenCalled(); /// manque l'appel de la fonction onSuccess pour l'envoi du formulaire
     });
   });
 });

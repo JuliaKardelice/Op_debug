@@ -43,7 +43,7 @@ describe("When a select is created", () => {
     });
     describe("and a click is triggered on a choice item", () => {
       it("a onChange callback is called", () => {
-        const onChange = jest.fn();
+        const onChange = jest.fn();  /// probleme sur l'appel de onChange
         render(<Select selection={["value1", "value2"]} onChange={onChange} />);
         const collapseButtonElement = screen.getByTestId(
           "collapse-button-testid"
@@ -82,7 +82,15 @@ describe("When a select is created", () => {
           })
         );
         expect(onChange.mock.calls.length).toBeGreaterThan(1);
+
+        // Check that the menu collapses after "Toutes" is selected
+        const allTitle = screen.getByText("Toutes");
+        expect(allTitle).toBeInTheDocument();
+
+        const allChoices = screen.queryByText("value1");
+        expect(allChoices).not.toBeInTheDocument();
       });
     });
   });
 });
+
