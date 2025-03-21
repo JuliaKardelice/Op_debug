@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, getAllByRole, render, screen } from "@testing-library/react";
 import Slider from "./index";
 import { api, DataProvider } from "../../contexts/DataContext";
 
@@ -41,4 +41,32 @@ describe("When slider is created", () => {
       "Oeuvre à la coopération entre le secteur public et le privé."
     );
   });
+});
+
+
+
+
+
+
+describe.skip('When the slider component is created', () => {
+  it('should display radio-button', () => {
+    render(<Slider />);
+    const radioButtons = screen.getAllByRole("radio") /// cela ne marche pas utiliser date-test-id ????
+
+    expect (radioButtons).toBeInTheDocument()
+ 
+  });
+  it.skip('it an onChange callback is called to change the current slide')
+  const onChange = jest.fn(); /// doit utiliser le set index
+  render (<Slider />)
+
+  fireEvent(
+  radioButtons,
+  new MouseEvent("click", {
+    bubbles: true,
+    cancelable: true,
+  })
+  )
+  expect (onChange).toHaveBeenCalled()
+
 });
