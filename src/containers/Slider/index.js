@@ -60,6 +60,7 @@ const Slider = () => {
               name="radio-button"
               checked={index === radioIdx} // Vérifie si l'index correspond au bouton radio
               onChange={() => setIndex(radioIdx)} // Change l'index en cliquant sur le bouton radio
+              data-testid={`radio-idx-${event.id}`}
             />
           ))}
         </div>

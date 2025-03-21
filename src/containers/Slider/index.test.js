@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, fireEvent, screen } from "@testing-library/react";
 import Slider from "./index";
 import { api, DataProvider } from "../../contexts/DataContext";
 
@@ -42,3 +42,44 @@ describe("When slider is created", () => {
     );
   });
 });
+
+
+
+describe.skip("Radio buttons work correctly in the slider", () => {
+
+  // vérifier que les boutons s'affichent
+  it("should display radio buttons", () => {
+    // On rend le composant dans l'environnement de test
+    render(
+      <Slider options={["Slide 1", "Slide 2", "Slide 3"]} />
+    );
+
+  
+    const radioButton = screen.getByTestId('radio-idx-1');
+    // Vérifie qu'il est bien dans le DOM
+    expect(radioButton).toBeInTheDocument();
+  });
+});
+
+  /* Deuxième test : vérifier que cliquer sur un bouton change de slide
+   it("should trigger a change of slides when the radio button is clicked", () => {
+    // Simule une fonction callback (comme une fonction onChange)
+    const onChange = jest.fn();
+
+    // Rendre le composant avec la fonction onChange simulée
+    render(
+      <Slider options={["Slide 1", "Slide 2", "Slide 3"]} onChange={onChange} />
+    );
+
+    // Sélectionne le deuxième bouton radio
+    const radioButton = screen.getByTestId('radio-idx-1');
+
+    // Simule un clic sur le bouton radio
+    fireEvent.click(radioButton);
+
+    // Vérifie que la fonction onChange a bien été appelée
+    expect(onChange).toHaveBeenCalled();
+  }); */
+
+
+  
