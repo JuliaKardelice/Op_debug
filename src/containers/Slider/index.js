@@ -58,9 +58,10 @@ const Slider = () => {
               key={event.id || radioIdx} // Utiliser event.id pour la clé unique ou radioIdx en secours
               type="radio"
               name="radio-button"
+              data-testid={`radio-button-${radioIdx}`}
               checked={index === radioIdx} // Vérifie si l'index correspond au bouton radio
               onChange={() => setIndex(radioIdx)} // Change l'index en cliquant sur le bouton radio
-              data-testid={`radio-idx-${event.id}`}
+              // data-testid={`radio-idx-${event.id}`} 
             />
           ))}
         </div>
